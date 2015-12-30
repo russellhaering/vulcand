@@ -302,18 +302,18 @@ func (s *BackendSuite) TestNewServerBadParams(c *C) {
 }
 
 func (s *BackendSuite) TestNewListener(c *C) {
-	_, err := NewListener("id", "http", "tcp", "127.0.0.1:4000", "", nil)
+	_, err := NewListener("id", "http", "tcp", "127.0.0.1:4000", "", false, nil)
 	c.Assert(err, IsNil)
 }
 
 func (s *BackendSuite) TestNewListenerBadParams(c *C) {
-	_, err := NewListener("id", "http", "tcp", "", "", nil)
+	_, err := NewListener("id", "http", "tcp", "", "", false, nil)
 	c.Assert(err, NotNil)
 
-	_, err = NewListener("id", "", "tcp", "127.0.0.1:4000", "", nil)
+	_, err = NewListener("id", "", "tcp", "127.0.0.1:4000", "", false, nil)
 	c.Assert(err, NotNil)
 
-	_, err = NewListener("id", "http", "tcp", "127.0.0.1:4000", "blabla", nil)
+	_, err = NewListener("id", "http", "tcp", "127.0.0.1:4000", "blabla", false, nil)
 	c.Assert(err, NotNil)
 }
 
