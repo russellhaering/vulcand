@@ -111,9 +111,20 @@ func (s *srv) takeFile(f *FileDescriptor) error {
 		return err
 	}
 
+	tcpListener, isTCP := listener.(*net.TCPListener)
+
+	if isTCP {
+		listener = manners.TCPKeepAliveListener{tcpListener}
+	}
+
+	if s.listener.TrustProxyProtocol {
+		listener = &proxyproto.Listener{
+			Listener: listener,
+		}
+	}
+
 	if s.isTLS() {
-		tcpListener, ok := listener.(*net.TCPListener)
-		if !ok {
+		if !isTCP {
 			return fmt.Errorf(`%s failed to take file descriptor - it is running in TLS mode so I need a TCP listener, 
 but the file descriptor that was given corresponded to a listener of type %T. More about file descriptor: %s`, listener, s, f)
 		}
@@ -121,8 +132,7 @@ but the file descriptor that was given corresponded to a listener of type %T. Mo
 		if err != nil {
 			return err
 		}
-		listener = manners.NewTLSListener(
-			manners.TCPKeepAliveListener{tcpListener}, config)
+		listener = manners.NewTLSListener(listener, config)
 	}
 
 	s.srv = manners.NewWithOptions(
