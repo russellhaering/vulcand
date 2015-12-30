@@ -238,19 +238,20 @@ func (s *srv) start() error {
 			return err
 		}
 
-		if s.isTLS() {
-			config, err := s.newTLSConfig()
-			if err != nil {
-				return err
-			}
-			listener = manners.NewTLSListener(
-				manners.TCPKeepAliveListener{listener.(*net.TCPListener)}, config)
-		}
+		listener = manners.TCPKeepAliveListener{listener.(*net.TCPListener)}
 
 		if s.listener.TrustProxyProtocol {
 			listener = &proxyproto.Listener{
 				Listener: listener,
 			}
+		}
+
+		if s.isTLS() {
+			config, err := s.newTLSConfig()
+			if err != nil {
+				return err
+			}
+			listener = manners.NewTLSListener(listener, config)
 		}
 
 		s.srv = manners.NewWithOptions(
