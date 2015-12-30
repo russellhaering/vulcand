@@ -8,7 +8,7 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/armon/go-proxyproto"
+	"github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/armon/go-proxyproto"
 
 	"github.com/vulcand/vulcand/engine"
 

@@ -6,6 +6,10 @@
 	],
 	"Deps": [
 		{
+			"ImportPath": "github.com/armon/go-proxyproto",
+			"Rev": "609d6338d3a76ec26ac3fe7045a164d9a58436e7"
+		},
+		{
 			"ImportPath": "github.com/buger/goterm",
 			"Rev": "db9aaed44abbb1be9061aa43612ede2e864c5973"
 		},
