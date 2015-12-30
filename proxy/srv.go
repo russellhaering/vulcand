@@ -8,6 +8,8 @@ import (
 	"net"
 	"net/http"
 
+	"github.com/armon/go-proxyproto"
+
 	"github.com/vulcand/vulcand/engine"
 
 	"github.com/vulcand/vulcand/Godeps/_workspace/src/github.com/mailgun/log"
@@ -244,6 +246,13 @@ func (s *srv) start() error {
 			listener = manners.NewTLSListener(
 				manners.TCPKeepAliveListener{listener.(*net.TCPListener)}, config)
 		}
+
+		if s.listener.TrustProxyProtocol {
+			listener = &proxyproto.Listener{
+				Listener: listener,
+			}
+		}
+
 		s.srv = manners.NewWithOptions(
 			manners.Options{
 				Server:       s.newHTTPServer(),

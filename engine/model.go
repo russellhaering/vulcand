@@ -74,6 +74,9 @@ type Listener struct {
 	Protocol string
 	// Adddress specifies network (tcp or unix) and address (ip:port or path to unix socket)
 	Address Address
+	// TrustProxyProtocol specifies whether the listener should look for and trust
+	// a Proxy Protocol v1 PROXY line.
+	TrustProxyProtocol bool
 	// Scope is optional expression that limits the operational scope of this listener
 	Scope string
 	// Settings provides listener-type specific settings, e.g. TLS settings for HTTPS listener
