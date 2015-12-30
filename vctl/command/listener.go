@@ -33,6 +33,7 @@ func NewListenerCommand(cmd *Command) cli.Command {
 					cli.StringFlag{Name: "net", Value: "tcp", Usage: "network, tcp or unix"},
 					cli.StringFlag{Name: "addr", Value: "tcp", Usage: "address to bind to, e.g. 'localhost:31000'"},
 					cli.StringFlag{Name: "scope", Usage: "scope expression limits the listener, e.g. 'Hostname(`myhost`)'"},
+					cli.BoolFlag{Name: "trustProxyProtocol", Usage: "detect and trust Proxy Protocol v1"},
 				}, getTLSFlags()...),
 				Action: cmd.upsertListenerAction,
 			},
@@ -58,7 +59,7 @@ func (cmd *Command) upsertListenerAction(c *cli.Context) {
 		}
 		settings = &engine.HTTPSListenerSettings{TLS: *s}
 	}
-	listener, err := engine.NewListener(c.String("id"), c.String("proto"), c.String("net"), c.String("addr"), c.String("scope"), settings)
+	listener, err := engine.NewListener(c.String("id"), c.String("proto"), c.String("net"), c.String("addr"), c.String("scope"), c.Bool("trustProxyProtocol"), settings)
 	if err != nil {
 		cmd.printError(err)
 		return

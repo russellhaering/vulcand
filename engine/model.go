@@ -245,7 +245,7 @@ func NewAddress(network, address string) (*Address, error) {
 	return &Address{Network: network, Address: address}, nil
 }
 
-func NewListener(id, protocol, network, address, scope string, settings *HTTPSListenerSettings) (*Listener, error) {
+func NewListener(id, protocol, network, address, scope string, trustProxyProtocol bool, settings *HTTPSListenerSettings) (*Listener, error) {
 	protocol = strings.ToLower(protocol)
 	if protocol != HTTP && protocol != HTTPS {
 		return nil, fmt.Errorf("unsupported protocol '%s', supported protocols are http and https", protocol)
@@ -263,11 +263,12 @@ func NewListener(id, protocol, network, address, scope string, settings *HTTPSLi
 	}
 
 	return &Listener{
-		Scope:    scope,
-		Id:       id,
-		Address:  *a,
-		Protocol: protocol,
-		Settings: settings,
+		Scope:              scope,
+		Id:                 id,
+		Address:            *a,
+		TrustProxyProtocol: trustProxyProtocol,
+		Protocol:           protocol,
+		Settings:           settings,
 	}, nil
 }
 
